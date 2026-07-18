@@ -27,7 +27,7 @@ COLLISION_BOXES = {
 
 
 def load_image(path: str) -> pygame.Surface:
-    return pygame.image.load(path).convert_alpha()
+    return pygame.image.load(f"assets/{path}").convert_alpha()
 
 
 def load_world_background(path: str) -> pygame.Surface:
@@ -119,7 +119,7 @@ def update_collision_box(box_key: str, dx: int = 0, dy: int = 0, resize_x: int =
     COLLISION_BOXES[box_key]["coords"] = [(x1, y1), (x2, y2)]
 
 
-def save_collision_config(filename: str = "collision_config.json") -> None:
+def save_collision_config(filename: str = "maps/collision_config.json") -> None:
     """Save collision box configuration to JSON file."""
     config = {}
     for box_key, box_data in COLLISION_BOXES.items():
@@ -135,7 +135,7 @@ def save_collision_config(filename: str = "collision_config.json") -> None:
     print(f"✓ Collision config saved to {filename}")
 
 
-def load_collision_config(filename: str = "collision_config.json") -> None:
+def load_collision_config(filename: str = "maps/collision_config.json") -> None:
     """Load collision box configuration from JSON file."""
     if not os.path.exists(filename):
         return  # File doesn't exist, use defaults
@@ -167,7 +167,7 @@ def main() -> None:
     load_collision_config()
 
     # Generate initial collision mask
-    collision_mask_path = "pallet_town_collision.png"
+    collision_mask_path = "maps/pallet_town_collision.png"
     generate_collision_mask(collision_mask_path)
     collision_mask = load_collision_mask(collision_mask_path)
 
