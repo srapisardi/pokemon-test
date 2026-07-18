@@ -1,0 +1,132 @@
+{
+  "1_top_border": {
+    "name": "Top Border",
+    "coords": [
+      [
+        0,
+        10
+      ],
+      [
+        1700,
+        90
+      ]
+    ]
+  },
+  "2_bottom_border": {
+    "name": "Bottom Border",
+    "coords": [
+      [
+        0,
+        1125
+      ],
+      [
+        1700,
+        1200
+      ]
+    ]
+  },
+  "3_left_border": {
+    "name": "Left Border",
+    "coords": [
+      [
+        0,
+        0
+      ],
+      [
+        80,
+        1200
+      ]
+    ]
+  },
+  "4_right_border": {
+    "name": "Right Border",
+    "coords": [
+      [
+        1620,
+        0
+      ],
+      [
+        1700,
+        1200
+      ]
+    ]
+  },
+  "5_top_left_building": {
+    "name": "Top-Left Building",
+    "coords": [
+      [
+        410,
+        220
+      ],
+      [
+        710,
+        470
+      ]
+    ]
+  },
+  "6_top_right_building": {
+    "name": "Top-Right Building",
+    "coords": [
+      [
+        995,
+        220
+      ],
+      [
+        1395,
+        470
+      ]
+    ]
+  },
+  "7_farm": {
+    "name": "Farm",
+    "coords": [
+      [
+        350,
+        640
+      ],
+      [
+        700,
+        890
+      ]
+    ]
+  },
+  "8_large_building": {
+    "name": "Large Building",
+    "coords": [
+      [
+        925,
+        570
+      ],
+      [
+        1325,
+        920
+      ]
+    ]
+  },
+  "9_fence": {
+    "name": "Fence",
+    "coords": [
+      [
+        915,
+        965
+      ],
+      [
+        1415,
+        1150
+      ]
+    ]
+  },
+  "0_water": {
+    "name": "Water",
+    "coords": [
+      [
+        410,
+        1015
+      ],
+      [
+        850,
+        1200
+      ]
+    ]
+  }
+}
