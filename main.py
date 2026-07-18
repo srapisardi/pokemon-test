@@ -37,7 +37,7 @@ def load_world_background(path: str) -> pygame.Surface:
 
 def load_collision_mask(path: str) -> pygame.Surface:
     """Load collision mask image for collision detection."""
-    return load_image(path)
+    return pygame.image.load(path).convert_alpha()
 
 
 def generate_collision_mask(path: str) -> None:
@@ -117,6 +117,33 @@ def update_collision_box(box_key: str, dx: int = 0, dy: int = 0, resize_x: int =
     y2 = max(y1 + 10, min(y2, WORLD_HEIGHT))
     
     COLLISION_BOXES[box_key]["coords"] = [(x1, y1), (x2, y2)]
+
+
+class Button:
+    """Simple button class for GUI."""
+    def __init__(self, x: int, y: int, width: int, height: int, label: str):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.label = label
+        self.hover = False
+    
+    def draw(self, surface: pygame.Surface, font: pygame.font.Font, color: tuple = (255, 255, 255)):
+        """Draw button on surface."""
+        bg_color = (100, 100, 100) if self.hover else (60, 60, 60)
+        pygame.draw.rect(surface, bg_color, self.rect)
+        pygame.draw.rect(surface, (200, 200, 200), self.rect, 2)
+        
+        text = font.render(self.label, True, color)
+        text_rect = text.get_rect(center=self.rect.center)
+        surface.blit(text, text_rect)
+    
+    def check_hover(self, pos: tuple) -> bool:
+        """Check if mouse is hovering over button."""
+        self.hover = self.rect.collidepoint(pos)
+        return self.hover
+    
+    def is_clicked(self, pos: tuple) -> bool:
+        """Check if button was clicked."""
+        return self.rect.collidepoint(pos)
 
 
 def save_collision_config(filename: str = "maps/collision_config.json") -> None:
@@ -213,6 +240,12 @@ def main() -> None:
     selected_box = "1_top_border"
     box_keys = list(COLLISION_BOXES.keys())
     collision_dirty = False
+    
+    # Create editor buttons for width/height adjustment
+    btn_width_minus = Button(50, 650, 40, 30, "W-")
+    btn_width_plus = Button(100, 650, 40, 30, "W+")
+    btn_height_minus = Button(150, 650, 40, 30, "H-")
+    btn_height_plus = Button(200, 650, 40, 30, "H+")
 
     pygame.key.set_repeat(500, 100)  # Initial delay: 500ms, repeat: 100ms
 
@@ -289,6 +322,29 @@ def main() -> None:
                     move_up = False
                 elif event.key in (pygame.K_s, pygame.K_DOWN):
                     move_down = False
+            
+            elif event.type == pygame.MOUSEMOTION:
+                # Update button hover states
+                if DEBUG_MODE:
+                    btn_width_minus.check_hover(event.pos)
+                    btn_width_plus.check_hover(event.pos)
+                    btn_height_minus.check_hover(event.pos)
+                    btn_height_plus.check_hover(event.pos)
+            
+            elif event.type == pygame.MOUSEBUTTONDOWN and DEBUG_MODE:
+                # Handle button clicks
+                if btn_width_minus.is_clicked(event.pos):
+                    update_collision_box(selected_box, resize_x=-10, resize_y=0)
+                    collision_dirty = True
+                elif btn_width_plus.is_clicked(event.pos):
+                    update_collision_box(selected_box, resize_x=10, resize_y=0)
+                    collision_dirty = True
+                elif btn_height_minus.is_clicked(event.pos):
+                    update_collision_box(selected_box, resize_x=0, resize_y=-10)
+                    collision_dirty = True
+                elif btn_height_plus.is_clicked(event.pos):
+                    update_collision_box(selected_box, resize_x=0, resize_y=10)
+                    collision_dirty = True
 
         # Regenerate collision mask if dirty
         if collision_dirty:
@@ -395,6 +451,12 @@ def main() -> None:
             for i, line in enumerate(debug_lines):
                 debug_text = small_font.render(line, True, (255, 100, 100))
                 screen.blit(debug_text, (20, 50 + i * 25))
+            
+            # Draw width/height adjustment buttons
+            btn_width_minus.draw(screen, small_font)
+            btn_width_plus.draw(screen, small_font)
+            btn_height_minus.draw(screen, small_font)
+            btn_height_plus.draw(screen, small_font)
 
         pygame.display.flip()
         clock.tick(60)
